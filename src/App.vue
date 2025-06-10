@@ -1,10 +1,13 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import { ElAlert } from 'element-plus';
 </script>
 
 <template>
   <header>
+    <el-button type="primary">xxxx</el-button>
+    <ElAlert></ElAlert>
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
