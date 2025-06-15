@@ -9,7 +9,7 @@
           <RouterLink to="/">首页</RouterLink>
         </li>
         <li v-for="(item, index) in categoryStore.categoryList" :key="index">
-          <RouterLink to="/">{{item.name}}</RouterLink>
+          <RouterLink :to="`/category/${item.id}`" active-class="active">{{item.name}}</RouterLink>
         </li>
       </ul>
       <div class="search">
@@ -27,7 +27,9 @@ import { getCategoryAPI } from '@/apis/layout';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
 import { useScroll } from '@vueuse/core';
+import { useRoute } from 'vue-router';
 import { useCategoryStore } from '@/stores/category';
+const route = useRoute()
 const categoryStore = useCategoryStore();
 // const categoryList = ref([]);
 const { y } = useScroll(window, {behavior: 'smooth'});

@@ -9,6 +9,7 @@
     </el-row>
     <HomeNew></HomeNew>
     <HomeHot></HomeHot>
+    <HomeProduct></HomeProduct>
 </template>
 
 <script setup>
