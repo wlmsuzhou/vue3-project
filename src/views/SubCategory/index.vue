@@ -10,12 +10,12 @@
       </el-breadcrumb>
     </div>
     <div class="sub-container">
-      <el-tabs>
+      <el-tabs v-model="requestData.sortField" @tab-change="tabChange">
         <el-tab-pane label="最新商品" name="publishTime"></el-tab-pane>
         <el-tab-pane label="最高人气" name="orderNum"></el-tab-pane>
         <el-tab-pane label="评论最多" name="evaluateNum"></el-tab-pane>
       </el-tabs>
-      <div class="body">
+      <div class="body" v-infinite-scroll="loadMore" :infinite-scroll-disabled="goodsList.length >= total">
         <GoodsItem v-for="(item, index) in goodsList" :key="index" :good="item" />
       </div>
     </div>
@@ -36,16 +36,36 @@ const getCategoryData = async () => {
 }
 // 获取商品数据
 const goodsList = ref([]);
-const requestData = {
+const total = ref(0);
+const requestData = ref({
   categoryId: route.params.id,
   page: 1,
   pageSize: 20,
   sortField: 'publishTime',
   sortOrder: 'desc'
-}
+})
 const getGoods = async () => {
-  const res = await getSubCategoryAPI(requestData)
+  const res = await getSubCategoryAPI(requestData.value)
   goodsList.value = res.result.items
+  total.value = res.result.counts;
+}
+const tabChange = () => {
+  // requestData.value.sortField = val;
+  requestData.value.page = 1;
+  getGoods();
+}
+const loadMore = async () => {
+  requestData.value.page++;
+  const moreDate = await getSubCategoryAPI(requestData.value);
+  if (moreDate.result.items.length === 0) {
+    alert(total.value)
+    ElMessage({
+      message: '没有更多数据了',
+      type: 'warning'
+    })
+  } else {
+    goodsList.value = [...goodsList.value, ...moreDate.result.items];
+  }
 }
 onMounted(() => {
   getCategoryData();

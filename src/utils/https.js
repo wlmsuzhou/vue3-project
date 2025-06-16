@@ -10,7 +10,7 @@ httpInstance.interceptors.request.use(config => {
 
 // 响应拦截器
 httpInstance.interceptors.response.use(response => {
-    return response.data
+    return response.data || { result: []}
 }, e => { Promise.reject(e) })
 
 export default httpInstance
